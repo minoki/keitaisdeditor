@@ -1,0 +1,39 @@
+/* 
+  Localizable.strings
+  keitaisdeditor
+
+  Created by 荒田 実樹 on 12/01/02.
+  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+*/
+
+/*
+CAT(@"DCIM",     @"%3dSHARP.TBL",@"DVC0%04d",NO);
+CAT(@"DOCUMENT", @"PUD%3d.TBL",nil,YES);
+CAT(@"MMFILE",   @"MUD%3d.TBL", @"MMF%04d",NO);
+CAT(@"RINGER",   @"RUD%3d.TBL", @"RNG%04d",NO);
+CAT(@"STILL",    @"SUD%3d.TBL", @"STIL%04d",NO);
+CAT(@"DECO_A_T", @"DTUD%3d.TBL",@"DEAT%04d",NO);
+CAT(@"DECOIMG",  @"DUD%3d.TBL", @"DIMG%04d",NO);
+CAT(@"LCSCLIENT",@"LSC%3d.TBL", @"LSCDC%03d",NO);
+CAT(@"OTHER",    @"OUD%3d.TBL", @"OTHER%03d",NO);
+CAT(@"SD_VIDEO", @"PRL%3d.TBL", @"MOL%04d",NO); // ??
+CAT(@"TORUCA",   @"TRC%3d.TBL", @"TORUC%03d",NO);
+*/
+
+"DCIM" = "DCIM";
+"DOCUMENT" = "Document";
+"MMFILE" = "MM File";
+"RINGER" = "Ringer";
+"STILL" = "Still Image";
+"DECO_A_T" = "DECO AT";
+"DECOIMG" = "DECO Image";
+"LCSCLIENT" = "LCS Client";
+"OTHER" = "Other";
+"SD_VIDEO" = "SD Video";
+"TORUCA" = "TORUCA";
+
+
+
+"Specified string contains some characters that cannot be expressed in the encoding" = "Specified string contains some characters that cannot be expressed in the encoding";
+"Specified string too long" = "Specified string too long";
+
