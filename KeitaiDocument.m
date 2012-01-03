@@ -13,7 +13,7 @@
 
 @implementation KeitaiDocument
 
-@synthesize root;
+@synthesize root, selectedItem;
 
 - (void)awakeFromNib {
     NSLog(@"KeitaiDocument -awakeFromNib");
@@ -21,6 +21,7 @@
 }
 
 - (void)dealloc {
+    [self setSelectedItem:nil];
     [self setRoot:nil];
     NSLog(@"KeitaiDocument -dealloc");
     [super dealloc];
@@ -111,18 +112,16 @@
 }
 
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
     if ([keyPath isEqualToString:@"selectedObjects"]) {
         id selectedObjects = [object selectedObjects];
         if ([selectedObjects count] > 0) {
-            id selectedObject = [selectedObjects objectAtIndex:0];
-            [folderInfoPanel hideFolderInfoPanel];
-            [fileInfoPanel hideFileInfoPanel];
-            if ([selectedObject isKindOfClass:[KTFolderInfo class]]) {
-                [folderInfoPanel showFolderInfoPanel:selectedObject];
-            } else if ([selectedObject isKindOfClass:[KTFileInfo class]]) {
-                [fileInfoPanel showFileInfoPanel:selectedObject];
-            }
+            self.selectedItem = [selectedObjects objectAtIndex:0];
+        } else {
+            self.selectedItem = nil;
         }
     }
 }

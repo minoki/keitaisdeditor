@@ -18,6 +18,7 @@
 }
 
 @property(retain) KTRoot *root;
+@property(retain) id selectedItem;
 
 - (IBAction)newFolder:(id)sender;
 - (IBAction)removeFolder:(id)sender;

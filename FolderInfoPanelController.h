@@ -8,11 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class KTFolderInfo, KTFileInfo;
+@class KTFolderInfo, KTFileInfo, KeitaiDocument;
 
 @interface FolderInfoPanelController : NSObject {
     IBOutlet NSView *rightPane;
     IBOutlet NSView *panel;
+    IBOutlet KeitaiDocument *document;
     KTFolderInfo *selectedFolderInfo;
 }
 
@@ -30,6 +31,7 @@
 @interface FileInfoPanelController : NSObject {
     IBOutlet NSView *rightPane;
     IBOutlet NSView *panel;
+    IBOutlet KeitaiDocument *document;
     KTFileInfo *selectedFileInfo;
 }
 

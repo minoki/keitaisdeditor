@@ -8,10 +8,25 @@
 
 #import "FolderInfoPanelController.h"
 #import "FolderInfo.h"
+#import "KeitaiDocument.h"
 
 @implementation FolderInfoPanelController
 
 @synthesize selectedFolderInfo;
+
+- (void)awakeFromNib {
+    [document addObserver:self
+               forKeyPath:@"selectedItem"
+                  options:NSKeyValueObservingOptionNew
+                          |NSKeyValueObservingOptionOld
+                          |NSKeyValueObservingOptionInitial
+                  context:NULL];
+}
+
+- (void)dealloc {
+    [document removeObserver:self forKeyPath:@"selectedItem"];
+    [super dealloc];
+}
 
 - (void)showFolderInfoPanel:(KTFolderInfo *)folderInfo {
     //NSLog(@"showFolderInfoPanel:");
@@ -24,6 +39,22 @@
         [panel removeFromSuperview];
     }
     self.selectedFolderInfo = nil;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    if ([keyPath isEqualToString:@"selectedItem"]) {
+        id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
+        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+        if ([oldValue isKindOfClass:[KTFolderInfo class]]) {
+            [self hideFolderInfoPanel];
+        }
+        if ([newValue isKindOfClass:[KTFolderInfo class]]) {
+            [self showFolderInfoPanel:newValue];
+        }
+    }
 }
 
 
@@ -47,6 +78,21 @@
 
 @synthesize selectedFileInfo;
 
+- (void)awakeFromNib {
+    [document addObserver:self
+               forKeyPath:@"selectedItem"
+                  options:NSKeyValueObservingOptionNew
+                          |NSKeyValueObservingOptionOld
+                          |NSKeyValueObservingOptionInitial
+                  context:NULL];
+}
+
+- (void)dealloc {
+    [document removeObserver:self forKeyPath:@"selectedItem"];
+    [super dealloc];
+}
+
+
 - (void)showFileInfoPanel:(KTFileInfo *)fileInfo {
     //NSLog(@"showFileInfoPanel:");
     self.selectedFileInfo = fileInfo;
@@ -58,6 +104,22 @@
         [panel removeFromSuperview];
     }
     self.selectedFileInfo = nil;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    if ([keyPath isEqualToString:@"selectedItem"]) {
+        id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
+        id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+        if ([oldValue isKindOfClass:[KTFileInfo class]]) {
+            [self hideFileInfoPanel];
+        }
+        if ([newValue isKindOfClass:[KTFileInfo class]]) {
+            [self showFileInfoPanel:newValue];
+        }
+    }
 }
 
 
