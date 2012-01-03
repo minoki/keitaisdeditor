@@ -412,6 +412,24 @@ return validateFixedString(strValue, outError, encoding, length); \
     return [info autorelease];
 }
 
+- (BOOL)removeFile:(KTFileInfo *)file {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error = nil;
+    if (![self.children containsObject:file]) {
+        return NO;
+    }
+    if (![fileManager removeItemAtPath:[file absolutePath] error:&error]) {
+        return NO;
+    }
+    self.children = [self.children filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL (id evaluatedObject, NSDictionary *bindings) {
+        return evaluatedObject != file;
+    }]];
+    _filesUpdated = YES;
+    [self updateTable];
+    return YES;
+}
+
+
 - (void)openFolder {
     [[NSWorkspace sharedWorkspace] openFile:[self absolutePath]];
 }

@@ -108,7 +108,14 @@
     }];
 }
 - (IBAction)removeFile:(id)sender {
-    NSLog(@"removeFile (not implemented)");
+    if ([self.selectedItem isKindOfClass:[KTFileInfo class]]) {
+        KTFileInfo *file = self.selectedItem;
+        if (![file.parent removeFile:file]) {
+            NSLog(@"removeFile: failed");
+        }
+    } else {
+        NSLog(@"removeFile: file not selected");
+    }
 }
 
 

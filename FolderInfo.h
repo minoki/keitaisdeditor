@@ -83,6 +83,7 @@
 - (void)updateTable;
 
 - (KTFileInfo *)addFile:(NSString *)path;
+- (BOOL)removeFile:(KTFileInfo *)file;
 
 - (void)openFolder;
 
