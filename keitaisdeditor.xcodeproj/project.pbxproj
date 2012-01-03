@@ -14,6 +14,7 @@
 		0C66184414B1E234005DE2F2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0C66184614B1E234005DE2F2 /* Localizable.strings */; };
 		0C66184814B2BFF4005DE2F2 /* NewFolderSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C66184714B2BFF4005DE2F2 /* NewFolderSheet.xib */; };
 		0C66184B14B2C14A005DE2F2 /* NewFolderSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C66184A14B2C14A005DE2F2 /* NewFolderSheetController.m */; };
+		0C66184E14B2D46A005DE2F2 /* MyBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C66184D14B2D46A005DE2F2 /* MyBrowser.m */; };
 		0C6D267D13D6B97300A8A227 /* FolderInfoPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D267C13D6B97300A8A227 /* FolderInfoPanelController.m */; };
 		0CD59F26137DF8BF0063C884 /* FolderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD59F25137DF8BF0063C884 /* FolderInfo.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
@@ -35,6 +36,8 @@
 		0C66184714B2BFF4005DE2F2 /* NewFolderSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewFolderSheet.xib; sourceTree = "<group>"; };
 		0C66184914B2C14A005DE2F2 /* NewFolderSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewFolderSheetController.h; sourceTree = "<group>"; };
 		0C66184A14B2C14A005DE2F2 /* NewFolderSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewFolderSheetController.m; sourceTree = "<group>"; };
+		0C66184C14B2D46A005DE2F2 /* MyBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBrowser.h; sourceTree = "<group>"; };
+		0C66184D14B2D46A005DE2F2 /* MyBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBrowser.m; sourceTree = "<group>"; };
 		0C6D267B13D6B97300A8A227 /* FolderInfoPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FolderInfoPanelController.h; sourceTree = "<group>"; };
 		0C6D267C13D6B97300A8A227 /* FolderInfoPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FolderInfoPanelController.m; sourceTree = "<group>"; };
 		0CD59F24137DF8BF0063C884 /* FolderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FolderInfo.h; sourceTree = "<group>"; };
@@ -77,6 +80,8 @@
 				0C6D267C13D6B97300A8A227 /* FolderInfoPanelController.m */,
 				0C66184914B2C14A005DE2F2 /* NewFolderSheetController.h */,
 				0C66184A14B2C14A005DE2F2 /* NewFolderSheetController.m */,
+				0C66184C14B2D46A005DE2F2 /* MyBrowser.h */,
+				0C66184D14B2D46A005DE2F2 /* MyBrowser.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -225,6 +230,7 @@
 				0C40DD0713D3CAA40044AAE5 /* MyWindowController.m in Sources */,
 				0C6D267D13D6B97300A8A227 /* FolderInfoPanelController.m in Sources */,
 				0C66184B14B2C14A005DE2F2 /* NewFolderSheetController.m in Sources */,
+				0C66184E14B2D46A005DE2F2 /* MyBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

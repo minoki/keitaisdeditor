@@ -15,6 +15,7 @@
     IBOutlet FolderInfoPanelController *folderInfoPanel;
     IBOutlet FileInfoPanelController *fileInfoPanel;
     IBOutlet NSTreeController *treeController;
+    IBOutlet NSBrowser *browser;
     IBOutlet NSWindow *newFolderSheet;
     IBOutlet NSTextField *newFolderName;
 }

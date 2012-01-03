@@ -11,11 +11,9 @@
 @implementation NewFolderSheetController
 
 - (IBAction)createNewFolder:(id)sender {
-    NSLog(@"createNewFolder");
     [NSApp endSheet:newFolderSheet returnCode:NSAlertDefaultReturn];
 }
 - (IBAction)closeSheet:(id)sender {
-    NSLog(@"closeSheet");
     [NSApp endSheet:newFolderSheet returnCode:NSAlertOtherReturn];
 }
 

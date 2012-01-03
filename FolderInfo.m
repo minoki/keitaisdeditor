@@ -117,26 +117,29 @@ static BOOL validateFixedString(id *ioValue, NSError **outError, NSStringEncodin
 }
 
 
+#define EMPTY()
 #define CONCAT(x,y) CONCAT2(x,y)
 #define CONCAT2(x,y) x##y
 #define STRINGIZE(x) STRINGIZE2(x)
 #define STRINGIZE2(x) #x
-#define DEFINE_STRING_ACCESSOR(name,Name,location,length,encoding) \
+#define DEFINE_STRING_ACCESSOR_BASE(name,Name,location,length,encoding,before,after) \
 - (NSString *)name { \
 return getStringFromDataWithEncoding(_tableFileData, NSMakeRange(location, length), encoding); \
 } \
 - (void)set ## Name:(NSString *)value { \
 if (value == nil) value = @""; \
+before() \
 [self willChangeValueForKey:@"" STRINGIZE(name)]; \
 setStringFromDataWithEncoding(_tableFileData, NSMakeRange(location, length), value, encoding); \
 [self didChangeValueForKey:@"" STRINGIZE(name)]; \
+after() \
 } \
 - (BOOL)validate##Name:(id *)strValue error:(NSError **)outError { \
 return validateFixedString(strValue, outError, encoding, length); \
 } \
 /**/
-
-
+#define DEFINE_STRING_ACCESSOR(name,Name,location,length,encoding) \
+    DEFINE_STRING_ACCESSOR_BASE(name,Name,location,length,encoding,EMPTY,EMPTY)
 
 
 
@@ -270,8 +273,8 @@ return validateFixedString(strValue, outError, encoding, length); \
     return NO;
 }
 
-- (NSString *)displayName {
-    return self.localizedName;
+- (NSDictionary *)browserValue {
+    return [NSDictionary dictionaryWithObjectsAndKeys:self.localizedName, @"name", nil];
 }
 
 - (NSString *)description {
@@ -453,7 +456,9 @@ return validateFixedString(strValue, outError, encoding, length); \
 // Properties
 
 DEFINE_STRING_ACCESSOR(deviceName, DeviceName, 384, 32, NSASCIIStringEncoding)
-DEFINE_STRING_ACCESSOR(displayName, DisplayName, 258, 64, NSShiftJISStringEncoding)
+DEFINE_STRING_ACCESSOR_BASE(displayName, DisplayName, 258, 64, NSShiftJISStringEncoding,
+                            [self willChangeValueForKey:@"browserValue"]; EMPTY,
+                            [self didChangeValueForKey:@"browserValue"]; EMPTY)
 
 - (NSDate *)mtime {
     return getDateFromData(_tableFileData, NSMakeRange(322, 20));
@@ -481,8 +486,8 @@ DEFINE_UINT32_ACCESSOR(unknownValue4,UnknownValue4,428,4)
     return NO;
 }
 
-- (NSString *)description {
-    return self.displayName;
+- (NSDictionary *)browserValue {
+    return [NSDictionary dictionaryWithObjectsAndKeys:self.displayName, @"name", nil];
 }
 
 @end
@@ -562,6 +567,10 @@ DEFINE_UINT32_ACCESSOR(unknownValue4,UnknownValue4,428,4)
     return [[self.parent absolutePath] stringByAppendingPathComponent:self.fileName];
 }
 
+- (NSImage *)fileIcon {
+    return [[NSWorkspace sharedWorkspace] iconForFile:[self absolutePath]];
+}
+
 - (BOOL)checkTable {
     const unsigned char *bytes = [_tableFileData bytes];
     BOOL correctsignature
@@ -585,7 +594,9 @@ DEFINE_UINT32_ACCESSOR(unknownValue4,UnknownValue4,428,4)
 
 // Properties
 DEFINE_STRING_ACCESSOR(deviceName, DeviceName, 128, 32, NSASCIIStringEncoding)
-DEFINE_STRING_ACCESSOR(displayName, DisplayName, 16, 64, NSShiftJISStringEncoding)
+DEFINE_STRING_ACCESSOR_BASE(displayName, DisplayName, 16, 64, NSShiftJISStringEncoding,
+                            [self willChangeValueForKey:@"browserValue"]; EMPTY,
+                            [self didChangeValueForKey:@"browserValue"]; EMPTY)
 DEFINE_STRING_ACCESSOR(comment, Comment, self.parent.parent.useLongFileName ? 160+64 : 160, 29, NSShiftJISStringEncoding)
 
 - (NSDate *)mtime {
@@ -659,8 +670,8 @@ DEFINE_STRING_ACCESSOR(comment, Comment, self.parent.parent.useLongFileName ? 16
     return YES;
 }
 
-- (NSString *)description {
-    return self.displayName;
+- (NSDictionary *)browserValue {
+    return [NSDictionary dictionaryWithObjectsAndKeys:self.displayName, @"name", [self fileIcon], @"icon", nil];
 }
 
 

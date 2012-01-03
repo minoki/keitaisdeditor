@@ -48,7 +48,7 @@
 - (BOOL)addFolder:(NSString *)name;
 
 - (BOOL)isLeaf;
-- (NSString *)displayName;
+- (NSDictionary *)browserValue;
 
 @end
 
@@ -91,6 +91,7 @@
 - (void)openFolder;
 
 - (BOOL)isLeaf;
+- (NSDictionary *)browserValue;
 
 @end
 
@@ -116,11 +117,13 @@
 - initWithData:(NSData *)data parent:(KTFolderInfo *)parent;
 - initWithFileName:(NSString *)fileName originalPath:(NSString *)path parent:(KTFolderInfo *)parent;
 - (NSString *)absolutePath;
+- (NSImage *)fileIcon;
 - (BOOL)checkTable;
 - (void)updateTable;
 
 - (void)openFile;
 
 - (BOOL)isLeaf;
+- (NSDictionary *)browserValue;
 
 @end
