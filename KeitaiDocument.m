@@ -17,6 +17,7 @@
 
 - (void)awakeFromNib {
     NSLog(@"KeitaiDocument -awakeFromNib");
+    [treeController addObserver:self forKeyPath:@"selectedObjects" options:NSKeyValueObservingOptionInitial context:NULL];
 }
 
 - (void)dealloc {
@@ -109,5 +110,21 @@
     NSLog(@"removeFile (not implemented)");
 }
 
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"selectedObjects"]) {
+        id selectedObjects = [object selectedObjects];
+        if ([selectedObjects count] > 0) {
+            id selectedObject = [selectedObjects objectAtIndex:0];
+            [folderInfoPanel hideFolderInfoPanel];
+            [fileInfoPanel hideFileInfoPanel];
+            if ([selectedObject isKindOfClass:[KTFolderInfo class]]) {
+                [folderInfoPanel showFolderInfoPanel:selectedObject];
+            } else if ([selectedObject isKindOfClass:[KTFileInfo class]]) {
+                [fileInfoPanel showFileInfoPanel:selectedObject];
+            }
+        }
+    }
+}
 
 @end

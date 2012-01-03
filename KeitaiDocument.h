@@ -14,6 +14,7 @@
 @interface KeitaiDocument : NSDocument {
     IBOutlet FolderInfoPanelController *folderInfoPanel;
     IBOutlet FileInfoPanelController *fileInfoPanel;
+    IBOutlet NSTreeController *treeController;
 }
 
 @property(retain) KTRoot *root;

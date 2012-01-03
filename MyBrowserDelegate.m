@@ -13,6 +13,8 @@
 
 @implementation MyBrowserDelegate
 
+#if 0
+
 - (KTFolderCategory *)selectedCategoryInBrowser:(NSBrowser *)browser {
     if ([browser selectedColumn] < 0) return nil;
     NSInteger row = [browser selectedRowInColumn:0];
@@ -27,7 +29,6 @@
 }
 
 
-#if 0
 - (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(NSInteger)row column:(NSInteger)column {
     if (column == 0) {
         KTFolderCategory *fi = [self->doc.root.children objectAtIndex:row];
@@ -56,9 +57,9 @@
         return f ? [f.children count] : 0;
     } else return 0;
 }
-#endif
 - (BOOL)browser:(NSBrowser *)sender selectRow:(NSInteger)row inColumn:(NSInteger)column {
     NSLog(@"selectRow:%d inColumn:%d", row, column);
+    NSLog(@"selection index path:%@", [controller selectedObjects]/*[[controller selectionIndexPaths] objectAtIndex:0]*/);
     if (column == 1) {
         KTFolderCategory *cat = [self selectedCategoryInBrowser:sender];
         [folderInfoPanel showFolderInfoPanel:[[cat children] objectAtIndex:row]];
@@ -76,6 +77,31 @@
 - (IBAction)browserClick:(NSBrowser *)sender {
     NSInteger column = [sender selectedColumn];
     [self browser:sender selectRow:[sender selectedRowInColumn:column] inColumn:column];
+}
+#endif
+
+- (void)awakeFromNib {
+    [controller addObserver:self forKeyPath:@"selectedObjects" options:NSKeyValueObservingOptionInitial context:NULL];
+}
+
+- (void)dealloc {
+    [controller removeObserver:self forKeyPath:@"selectedObjects"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"selectedObjects"]) {
+        id selectedObjects = [object selectedObjects];
+        if ([selectedObjects count] > 0) {
+            id selectedObject = [selectedObjects objectAtIndex:0];
+            [folderInfoPanel hideFolderInfoPanel];
+            [fileInfoPanel hideFileInfoPanel];
+            if ([selectedObject isKindOfClass:[KTFolderInfo class]]) {
+                [folderInfoPanel showFolderInfoPanel:selectedObject];
+            } else if ([selectedObject isKindOfClass:[KTFileInfo class]]) {
+                [fileInfoPanel showFileInfoPanel:selectedObject];
+            }
+        }
+    }
 }
 
 @end

@@ -14,8 +14,10 @@
     IBOutlet KeitaiDocument *doc;
     IBOutlet FolderInfoPanelController *folderInfoPanel;
     IBOutlet FileInfoPanelController *fileInfoPanel;
+    IBOutlet NSTreeController *controller;
+    IBOutlet NSBrowser *browser;
 }
 
-- (IBAction)browserClick:(NSBrowser *)sender;
+//- (IBAction)browserClick:(NSBrowser *)sender;
 
 @end
