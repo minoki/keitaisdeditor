@@ -7,7 +7,6 @@
 //
 
 #import "FolderInfo.h"
-#import "MemoryMappedFile.h"
 
 #import <assert.h>
 
