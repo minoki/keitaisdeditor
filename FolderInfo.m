@@ -261,6 +261,11 @@ return validateFixedString(strValue, outError, encoding, length); \
     [super dealloc];
 }
 
+- (BOOL)addFolder:(NSString *)name {
+    NSLog(@"KTFolderCategory addFolder:%@ (not implemented)", name);
+    return NO;
+}
+
 - (BOOL)isLeaf {
     return NO;
 }

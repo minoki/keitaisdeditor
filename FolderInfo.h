@@ -45,6 +45,8 @@
 
 - initWithName:(NSString *)name folderPattern:(NSString *)pattern filePattern:(NSString *)filePattern useLongFileName:(BOOL)lf root:(KTRoot *)root;
 
+- (BOOL)addFolder:(NSString *)name;
+
 - (BOOL)isLeaf;
 - (NSString *)displayName;
 

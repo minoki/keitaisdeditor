@@ -15,6 +15,8 @@
     IBOutlet FolderInfoPanelController *folderInfoPanel;
     IBOutlet FileInfoPanelController *fileInfoPanel;
     IBOutlet NSTreeController *treeController;
+    IBOutlet NSWindow *newFolderSheet;
+    IBOutlet NSTextField *newFolderName;
 }
 
 @property(retain) KTRoot *root;

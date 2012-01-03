@@ -80,7 +80,31 @@
 
 - (IBAction)newFolder:(id)sender {
     NSLog(@"newFolder (not implemented)");
+    if (!newFolderSheet)
+        [NSBundle loadNibNamed:@"NewFolderSheet" owner:self];
+    [NSApp beginSheet:newFolderSheet modalForWindow:[self windowForSheet] modalDelegate:self didEndSelector:@selector(newFolderSheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
 }
+- (void)newFolderSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+    [sheet orderOut:self];
+    if (returnCode == NSAlertDefaultReturn) {
+        NSString *name = [newFolderName stringValue];
+        KTFolderCategory *cat = nil;
+        if ([self.selectedItem isKindOfClass:[KTFileInfo class]]) {
+            KTFileInfo *file = self.selectedItem;
+            cat = file.parent.parent;
+        } else if ([self.selectedItem isKindOfClass:[KTFolderInfo class]]) {
+            KTFolderInfo *file = self.selectedItem;
+            cat = file.parent;
+        } else if ([self.selectedItem isKindOfClass:[KTFolderCategory class]]) {
+            cat = self.selectedItem;
+        }
+        if (cat) {
+            [cat addFolder:name];
+        }
+    }
+}
+
+
 - (IBAction)removeFolder:(id)sender {
     NSLog(@"removeFolder (not implemented)");
 }

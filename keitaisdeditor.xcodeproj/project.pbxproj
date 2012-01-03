@@ -12,6 +12,8 @@
 		0C40DCB213D3C5A80044AAE5 /* MyDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C40DCB113D3C5A80044AAE5 /* MyDocumentController.m */; };
 		0C40DD0713D3CAA40044AAE5 /* MyWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C40DD0613D3CAA40044AAE5 /* MyWindowController.m */; };
 		0C66184414B1E234005DE2F2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0C66184614B1E234005DE2F2 /* Localizable.strings */; };
+		0C66184814B2BFF4005DE2F2 /* NewFolderSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C66184714B2BFF4005DE2F2 /* NewFolderSheet.xib */; };
+		0C66184B14B2C14A005DE2F2 /* NewFolderSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C66184A14B2C14A005DE2F2 /* NewFolderSheetController.m */; };
 		0C6D267D13D6B97300A8A227 /* FolderInfoPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D267C13D6B97300A8A227 /* FolderInfoPanelController.m */; };
 		0CD59F26137DF8BF0063C884 /* FolderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD59F25137DF8BF0063C884 /* FolderInfo.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
@@ -30,6 +32,9 @@
 		0C40DD0513D3CAA40044AAE5 /* MyWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWindowController.h; sourceTree = "<group>"; };
 		0C40DD0613D3CAA40044AAE5 /* MyWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWindowController.m; sourceTree = "<group>"; };
 		0C66184514B1E234005DE2F2 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0C66184714B2BFF4005DE2F2 /* NewFolderSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewFolderSheet.xib; sourceTree = "<group>"; };
+		0C66184914B2C14A005DE2F2 /* NewFolderSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewFolderSheetController.h; sourceTree = "<group>"; };
+		0C66184A14B2C14A005DE2F2 /* NewFolderSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewFolderSheetController.m; sourceTree = "<group>"; };
 		0C6D267B13D6B97300A8A227 /* FolderInfoPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FolderInfoPanelController.h; sourceTree = "<group>"; };
 		0C6D267C13D6B97300A8A227 /* FolderInfoPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FolderInfoPanelController.m; sourceTree = "<group>"; };
 		0CD59F24137DF8BF0063C884 /* FolderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FolderInfo.h; sourceTree = "<group>"; };
@@ -70,6 +75,8 @@
 				0C40DD0613D3CAA40044AAE5 /* MyWindowController.m */,
 				0C6D267B13D6B97300A8A227 /* FolderInfoPanelController.h */,
 				0C6D267C13D6B97300A8A227 /* FolderInfoPanelController.m */,
+				0C66184914B2C14A005DE2F2 /* NewFolderSheetController.h */,
+				0C66184A14B2C14A005DE2F2 /* NewFolderSheetController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -125,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				0C40DC2F13D311320044AAE5 /* KeitaiDocument.xib */,
+				0C66184714B2BFF4005DE2F2 /* NewFolderSheet.xib */,
 				8D1107310486CEB800E47090 /* keitaisdeditor-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
@@ -199,6 +207,7 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				0C40DC3013D311320044AAE5 /* KeitaiDocument.xib in Resources */,
 				0C66184414B1E234005DE2F2 /* Localizable.strings in Resources */,
+				0C66184814B2BFF4005DE2F2 /* NewFolderSheet.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +224,7 @@
 				0C40DCB213D3C5A80044AAE5 /* MyDocumentController.m in Sources */,
 				0C40DD0713D3CAA40044AAE5 /* MyWindowController.m in Sources */,
 				0C6D267D13D6B97300A8A227 /* FolderInfoPanelController.m in Sources */,
+				0C66184B14B2C14A005DE2F2 /* NewFolderSheetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
