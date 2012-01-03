@@ -30,7 +30,9 @@
     NSArray *_children;
 
     NSString *_name;
+    NSString *_localizedName;
     NSString *_folderPattern;
+    NSString *_filePattern;
     BOOL _useLongFileName;
 }
 
@@ -56,12 +58,11 @@
     NSFileHandle *_tableFileHandle;
     NSMutableData *_tableFileData;
     BOOL _filesUpdated;
-/*
+
     KTFolderCategory *_parent;
     NSArray *_children;
     NSString *_folderPath;
     NSString *_tablePath;
-*/
 }
 
 @property(assign) KTFolderCategory *parent;
@@ -97,10 +98,10 @@
 
 @interface KTFileInfo : NSObject {
     NSMutableData *_tableFileData;
-/*
+
     KTFolderInfo *_parent;
     NSString *_fileName;
-*/
+    size_t _fileSize;
 }
 
 @property(assign) KTFolderInfo *parent;

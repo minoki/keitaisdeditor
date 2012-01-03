@@ -13,7 +13,7 @@
 
 @implementation KeitaiDocument
 
-@synthesize root, selectedItem;
+@synthesize root = _root, selectedItem = _selectedItem;
 
 - (void)awakeFromNib {
     NSLog(@"KeitaiDocument -awakeFromNib");

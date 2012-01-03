@@ -18,6 +18,8 @@
     IBOutlet NSBrowser *browser;
     IBOutlet NSWindow *newFolderSheet;
     IBOutlet NSTextField *newFolderName;
+    KTRoot *_root;
+    id _selectedItem;
 }
 
 @property(retain) KTRoot *root;
