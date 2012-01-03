@@ -334,7 +334,6 @@ return validateFixedString(strValue, outError, encoding, length); \
             [_tableFileHandle seekToFileOffset:offset];
             NSData *data = [_tableFileHandle readDataOfLength:256];
             KTFileInfo *info = [[KTFileInfo alloc] initWithData:data
-                                                         offset:offset
                                                          parent:self];
             [files addObject:[info autorelease]];
         }
@@ -362,8 +361,20 @@ return validateFixedString(strValue, outError, encoding, length); \
         for (KTFileInfo *info in self.children) {
             [info updateTable];
         }
+        [_tableFileHandle truncateFileAtOffset:512+[self.children count]*256];
         _filesUpdated = NO;
     }
+}
+
+- (off_t)offsetForFileInfo:(KTFileInfo *)file {
+    NSUInteger idx = [self.children indexOfObject:file];
+    if (idx == NSNotFound) {
+        NSLog(@"KTFolderInfo(%p,%@) -offsetForFileInfo:%p,%@ file not found", self, self, file, file);
+        [[NSException exceptionWithName:NSInvalidArgumentException
+                                 reason:@"The file information passed to KTFolderInfo -offsetForFileInfo: is not a child of this folder"
+                               userInfo:nil] raise];
+    }
+    return 512+idx*256;
 }
 
 - (BOOL)fileNameAlreadyUsed:(NSString *)fileName {
@@ -404,8 +415,7 @@ return validateFixedString(strValue, outError, encoding, length); \
     if (![fileManager copyItemAtPath:path toPath:destPath error:&error]) {
         return nil;
     }
-    off_t offset = 512+256*[self.children count];
-    KTFileInfo *info = [[KTFileInfo alloc] initWithFileName:fileName originalPath:path offset:offset parent:self];
+    KTFileInfo *info = [[KTFileInfo alloc] initWithFileName:fileName originalPath:path parent:self];
     self.children = [self.children arrayByAddingObject:info];
     _filesUpdated = YES;
     [self updateTable];
@@ -476,12 +486,11 @@ DEFINE_UINT32_ACCESSOR(unknownValue4,UnknownValue4,428,4)
 
 @synthesize fileName=_fileName, fileSize=_fileSize, parent=_parent;
 
-- (id)initWithData:(NSData *)data offset:(off_t)offset parent:(KTFolderInfo *)parent {
+- (id)initWithData:(NSData *)data parent:(KTFolderInfo *)parent {
     self = [super init];
     if (self) {
         self.parent = parent;
         _tableFileData = [data mutableCopy];
-        _offset = offset;
         self.fileSize = getUInt32FromData(data, NSMakeRange(100,4));
         NSString *fileBaseName = getStringFromDataWithEncoding(data, NSMakeRange(3,8), NSASCIIStringEncoding);
         NSString *fileExtension = getStringFromDataWithEncoding(data, NSMakeRange(11,3), NSASCIIStringEncoding);
@@ -494,11 +503,10 @@ DEFINE_UINT32_ACCESSOR(unknownValue4,UnknownValue4,428,4)
     return self;
 }
 
-- initWithFileName:(NSString *)fileName originalPath:(NSString *)path offset:(off_t)offset parent:(KTFolderInfo *)parent {
+- initWithFileName:(NSString *)fileName originalPath:(NSString *)path parent:(KTFolderInfo *)parent {
     self = [super init];
     if (self) {
         self.parent = parent;
-        _offset = offset;
         _tableFileData = [[NSMutableData new] initWithLength:256];
         {
             unsigned char *bytes = [_tableFileData mutableBytes];
@@ -561,7 +569,7 @@ DEFINE_UINT32_ACCESSOR(unknownValue4,UnknownValue4,428,4)
 }
 
 - (void)updateTable {
-    [self.parent.tableFileHandle seekToFileOffset:_offset];
+    [self.parent.tableFileHandle seekToFileOffset:[self.parent offsetForFileInfo:self]];
     [self.parent.tableFileHandle writeData:_tableFileData];
 }
 

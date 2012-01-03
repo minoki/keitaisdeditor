@@ -81,6 +81,7 @@
 - (NSString *)absolutePath;
 - (BOOL)checkTable;
 - (void)updateTable;
+- (off_t)offsetForFileInfo:(KTFileInfo *)file;
 
 - (KTFileInfo *)addFile:(NSString *)path;
 - (BOOL)removeFile:(KTFileInfo *)file;
@@ -92,7 +93,6 @@
 @end
 
 @interface KTFileInfo : NSObject {
-    off_t _offset;
     NSMutableData *_tableFileData;
 /*
     KTFolderInfo *_parent;
@@ -111,8 +111,8 @@
 @property(assign) int rating;
 @property(assign) int viewCount;
 
-- initWithData:(NSData *)data offset:(off_t)offset parent:(KTFolderInfo *)parent;
-- initWithFileName:(NSString *)fileName originalPath:(NSString *)path offset:(off_t)offset parent:(KTFolderInfo *)parent;
+- initWithData:(NSData *)data parent:(KTFolderInfo *)parent;
+- initWithFileName:(NSString *)fileName originalPath:(NSString *)path parent:(KTFolderInfo *)parent;
 - (NSString *)absolutePath;
 - (BOOL)checkTable;
 - (void)updateTable;
