@@ -59,7 +59,6 @@
 							<string key="NSFrame">{{126, 12}, {82, 32}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:687</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="926550661">
@@ -215,14 +214,6 @@
 						<reference key="destination" ref="992541929"/>
 					</object>
 					<int key="connectionID">17</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">folderName</string>
-						<reference key="source" ref="454331409"/>
-						<reference key="destination" ref="992541929"/>
-					</object>
-					<int key="connectionID">12</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -645,6 +636,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>browser</string>
 							<string>fileInfoPanel</string>
 							<string>folderInfoPanel</string>
 							<string>newFolderName</string>
@@ -653,6 +645,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSBrowser</string>
 							<string>FileInfoPanelController</string>
 							<string>FolderInfoPanelController</string>
 							<string>NSTextField</string>
@@ -664,6 +657,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>browser</string>
 							<string>fileInfoPanel</string>
 							<string>folderInfoPanel</string>
 							<string>newFolderName</string>
@@ -672,6 +666,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">browser</string>
+								<string key="candidateClassName">NSBrowser</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">fileInfoPanel</string>
 								<string key="candidateClassName">FileInfoPanelController</string>
