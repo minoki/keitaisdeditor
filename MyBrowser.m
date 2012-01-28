@@ -8,6 +8,8 @@
 
 #import "MyBrowser.h"
 
+#import <Quartz/Quartz.h>
+
 @implementation MyBrowserCell
 
 - (void)setObjectValue:(id<NSCopying>)obj {
@@ -48,6 +50,21 @@
         [self setCellClass:[MyBrowserCell class]];
     }
     return self;
+}
+
+- (void)keyDown:(NSEvent *)theEvent {
+    NSString *key = [theEvent charactersIgnoringModifiers];
+    if ([key isEqualToString:@" "]) {
+        NSLog(@"MyBrowser -keyDown [SPACE]");
+        if ([[QLPreviewPanel sharedPreviewPanel] isVisible]) {
+            [[QLPreviewPanel sharedPreviewPanel] orderOut:nil];
+        } else {
+            [[QLPreviewPanel sharedPreviewPanel] makeKeyAndOrderFront:nil];
+        }
+        //[super keyDown:theEvent];
+    } else {
+        [super keyDown:theEvent];
+    }
 }
 
 @end

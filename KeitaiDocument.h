@@ -7,11 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Quartz/Quartz.h>
 
 @class KTRoot;
 @class FolderInfoPanelController, FileInfoPanelController;
 
-@interface KeitaiDocument : NSDocument {
+@interface KeitaiDocument : NSDocument <QLPreviewPanelDelegate, QLPreviewPanelDataSource> {
     IBOutlet FolderInfoPanelController *folderInfoPanel;
     IBOutlet FileInfoPanelController *fileInfoPanel;
     IBOutlet NSTreeController *treeController;
@@ -20,6 +21,7 @@
     IBOutlet NSTextField *newFolderName;
     KTRoot *_root;
     id _selectedItem;
+    QLPreviewPanel *previewPanel;
 }
 
 @property(retain) KTRoot *root;

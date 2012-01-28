@@ -154,7 +154,72 @@
         } else {
             self.selectedItem = nil;
         }
+        if (previewPanel) {
+            [previewPanel reloadData];
+        }
+    }
+}
+
+
+// QuickLook support
+
+- (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel {
+    return YES;
+}
+
+- (void)beginPreviewPanelControl:(QLPreviewPanel *)panel {
+    NSLog(@"beginPreviewPanelControl");
+    previewPanel = [panel retain];
+    panel.delegate = self;
+    panel.dataSource = self;
+    
+}
+
+- (void)endPreviewPanelControl:(QLPreviewPanel *)panel {
+    NSLog(@"endPreviewPanelControl");
+    [previewPanel release];
+    previewPanel = nil;
+}
+
+- (BOOL)previewPanel:(QLPreviewPanel *)panel handleEvent:(NSEvent *)event {
+    if ([event type] == NSKeyDown) {
+        [browser keyDown:event];
+        return YES;
+    }
+    return NO;
+}
+
+- (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel {
+    if ([self.selectedItem isKindOfClass:[KTFileInfo class]]) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+- (id<QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index {
+    if ([self.selectedItem conformsToProtocol:@protocol(QLPreviewItem)]) {
+        return self.selectedItem;
+    } else {
+        return nil;
     }
 }
 
 @end
+
+
+@interface KTFileInfo (KTFilePreview) <QLPreviewItem>
+@end
+
+@implementation KTFileInfo (KTFilePreview)
+
+- (NSURL *)previewItemURL {
+    return [NSURL fileURLWithPath:[self absolutePath]];
+}
+
+- (NSString *)previewItemTitle {
+    return self.displayName;
+}
+
+@end
+
