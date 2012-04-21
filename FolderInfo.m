@@ -316,7 +316,7 @@ return validateFixedString(strValue, outError, encoding, length); \
 
 @implementation KTFolderInfo
 
-@synthesize parent=_parent, children=_children, folderPath=_folderPath,
+@synthesize parent=_parent, children=_children,
             tablePath=_tablePath, tableFileHandle=_tableFileHandle;
 
 - initWithTablePath:(NSString *)tablePath parent:(KTFolderCategory *)parent {
