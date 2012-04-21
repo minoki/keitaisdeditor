@@ -14,10 +14,12 @@
 @interface KTRoot : NSObject {
     NSString *_rootPath;
     NSArray *_children;
+    NSString *_tableDirectoryPath;
 }
 
 @property(retain) NSString *rootPath;
 @property(retain) NSArray *children;
+@property(retain) NSString *tableDirectoryPath;
 
 - initWithRootPath:(NSString *)rootPath error:(NSError **)outError;
 
@@ -32,7 +34,9 @@
     NSString *_name;
     NSString *_localizedName;
     NSString *_folderPattern;
+    NSString *_tableFilePattern;
     NSString *_filePattern;
+    NSString *_tableDirectoryPath;
     BOOL _useLongFileName;
 }
 
@@ -42,10 +46,17 @@
 @property(retain) NSString *name;
 @property(retain) NSString *localizedName;
 @property(retain) NSString *folderPattern;
+@property(retain) NSString *tableFilePattern;
 @property(retain) NSString *filePattern;
+@property(retain) NSString *tableDirectoryPath;
 @property(assign) BOOL useLongFileName;
 
-- initWithName:(NSString *)name folderPattern:(NSString *)pattern filePattern:(NSString *)filePattern useLongFileName:(BOOL)lf root:(KTRoot *)root;
+- initWithName:(NSString *)name
+    folderPattern:(NSString *)folderPattern
+    tableFilePattern:(NSString *)tableFilePattern
+    filePattern:(NSString *)filePattern
+    useLongFileName:(BOOL)lf
+    root:(KTRoot *)root;
 
 - (BOOL)addFolder:(NSString *)name;
 
@@ -61,7 +72,6 @@
 
     KTFolderCategory *_parent;
     NSArray *_children;
-    NSString *_folderPath;
     NSString *_tablePath;
 }
 
@@ -80,6 +90,10 @@
 @property(assign) NSUInteger unknownValue4;
 
 - initWithTablePath:(NSString *)tablePath parent:(KTFolderCategory *)parent;
+- initWithNewFolderAtPath:(NSString *)folderPath
+              displayName:(NSString *)displayName
+            tableFilePath:(NSString *)tablePath
+                   parent:(KTFolderCategory *)parent;
 
 - (NSString *)absolutePath;
 - (BOOL)checkTable;

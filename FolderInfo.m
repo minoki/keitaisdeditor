@@ -78,7 +78,7 @@ static NSDate *getDateFromData(NSData *data, NSRange range) {
     NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
     [formatter setDateFormat:@"yyyy:MM:dd HH:mm:ss"];
     return [formatter dateFromString:dateString];
-}
+} 
 static void setDateFromData(NSMutableData *data, NSRange range, NSDate *date) {
     assert(range.length == 20);
     NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
@@ -145,7 +145,8 @@ return validateFixedString(strValue, outError, encoding, length); \
 
 @implementation KTRoot
 
-@synthesize rootPath=_rootPath, children=_children;
+@synthesize rootPath=_rootPath, children=_children,
+            tableDirectoryPath=_tableDirectoryPath;
 
 - initWithRootPath:(NSString *)rootPath error:(NSError **)outError {
     self = [super init];
@@ -156,6 +157,7 @@ return validateFixedString(strValue, outError, encoding, length); \
             = [[[rootPath stringByAppendingPathComponent:@"PRIVATE"]
                           stringByAppendingPathComponent:@"DOCOMO"]
                           stringByAppendingPathComponent:@"TABLE"];
+        self.tableDirectoryPath = tableDirectoryPath;
         if (![fileManager fileExistsAtPath:tableDirectoryPath isDirectory:&isDirectory]) {
             NSLog(@"Rejecting because the directory %@ didn't exist...", tableDirectoryPath);
             if (outError) {
@@ -178,24 +180,25 @@ return validateFixedString(strValue, outError, encoding, length); \
         }
         self.rootPath = rootPath;
         NSMutableArray *f = [NSMutableArray arrayWithCapacity:10];
-#define CAT(name,pat,fpat,ulfn) \
+#define CAT(name,folderPat,tblPat,fpat,ulfn) \
             [f addObject:[[[KTFolderCategory alloc] \
                             initWithName:name \
-                            folderPattern:pat \
+                            folderPattern:folderPat \
+                            tableFilePattern:tblPat \
                             filePattern:fpat \
                             useLongFileName:ulfn \
                             root:self] autorelease]]
-        CAT(@"DCIM",     @"%3dSHARP.TBL",@"DVC0%04d",NO);
-        CAT(@"DOCUMENT", @"PUD%3d.TBL",nil,YES);
-        CAT(@"MMFILE",   @"MUD%3d.TBL", @"MMF%04d",NO);
-        CAT(@"RINGER",   @"RUD%3d.TBL", @"RNG%04d",NO);
-        CAT(@"STILL",    @"SUD%3d.TBL", @"STIL%04d",NO);
-        CAT(@"DECO_A_T", @"DTUD%3d.TBL",@"DEAT%04d",NO);
-        CAT(@"DECOIMG",  @"DUD%3d.TBL", @"DIMG%04d",NO);
-        CAT(@"LCSCLIENT",@"LSC%3d.TBL", @"LSCDC%03d",NO);
-        CAT(@"OTHER",    @"OUD%3d.TBL", @"OTHER%03d",NO);
-        CAT(@"SD_VIDEO", @"PRL%3d.TBL", @"MOL%04d",NO); // ??
-        CAT(@"TORUCA",   @"TRC%3d.TBL", @"TORUC%03d",NO);
+        CAT(@"DCIM",     @"DCIM\\%3dSHARP",                   @"%03dSHARP.TBL",@"DVC0%04d",NO);
+        CAT(@"DOCUMENT", @"PRIVATE\\DOCOMO\\DOCUMENT\\PUD%03d", @"PUD%03d.TBL",nil,YES);
+        CAT(@"MMFILE",   @"PRIVATE\\DOCOMO\\MMFILE\\MUD%03d",   @"MUD%03d.TBL", @"MMF%04d",NO);
+        CAT(@"RINGER",   @"PRIVATE\\DOCOMO\\RINGER\\RUD%03d",   @"RUD%03d.TBL", @"RNG%04d",NO);
+        CAT(@"STILL",    @"PRIVATE\\DOCOMO\\STILL\\SUD%03d",    @"SUD%03d.TBL", @"STIL%04d",NO);
+        CAT(@"DECO_A_T", @"PRIVATE\\DOCOMO\\DECO_A_T\\DTUD%03d",@"DTUD%03d.TBL",@"DEAT%04d",NO);
+        CAT(@"DECOIMG",  @"PRIVATE\\DOCOMO\\DECOIMG\\DUD%03d",  @"DUD%03d.TBL", @"DIMG%04d",NO);
+        CAT(@"LCSCLIENT",@"PRIVATE\\DOCOMO\\LCSCLIENT\\LSC%03d",@"LSC%03d.TBL", @"LSCDC%03d",NO);
+        CAT(@"OTHER",    @"PRIVATE\\DOCOMO\\OTHER\\OUD%03d",    @"OUD%03d.TBL", @"OTHER%03d",NO);
+        CAT(@"SD_VIDEO", @"PRIVATE\\DOCOMO\\SD_VIDEO\\PRL%03d", @"PRL%03d.TBL", @"MOL%04d",NO); // ??
+        CAT(@"TORUCA",   @"PRIVATE\\DOCOMO\\TORUCA\\TRC%03d",   @"TRC%03d.TBL", @"TORUC%03d",NO);
 #undef CAT
         self.children = f;
     }
@@ -217,31 +220,35 @@ return validateFixedString(strValue, outError, encoding, length); \
 @implementation KTFolderCategory
 
 @synthesize root = _root, children = _children, name = _name,
-            localizedName = _localizedName,
-            folderPattern = _folderPattern, filePattern = _filePattern,
+            localizedName = _localizedName, folderPattern = _folderPattern,
+            tableFilePattern = _tableFilePattern, filePattern = _filePattern,
+            tableDirectoryPath = _tableDirectoryPath,
             useLongFileName=_useLongFileName;
 
-- initWithName:(NSString *)name folderPattern:(NSString *)pattern filePattern:(NSString *)filePattern useLongFileName:(BOOL)lf root:(KTRoot *)root {
+- initWithName:(NSString *)name
+        folderPattern:(NSString *)folderPattern
+        tableFilePattern:(NSString *)tableFilePattern
+        filePattern:(NSString *)filePattern
+        useLongFileName:(BOOL)lf
+        root:(KTRoot *)root {
     self = [super init];
     if (self) {
         self.root = root;
         self.name = name;
         self.localizedName = NSLocalizedString(name, @"");
-        self.folderPattern = pattern;
+        self.folderPattern = folderPattern;
+        self.tableFilePattern = tableFilePattern;
         self.filePattern = filePattern;
         self.useLongFileName = lf;
-        NSString *rootPath = root.rootPath;
         NSString *tableDirectoryPath
-            = [[[[rootPath stringByAppendingPathComponent:@"PRIVATE"]
-                           stringByAppendingPathComponent:@"DOCOMO"]
-                           stringByAppendingPathComponent:@"TABLE"]
-                           stringByAppendingPathComponent:name];
+            = [root.tableDirectoryPath stringByAppendingPathComponent:name];
+        self.tableDirectoryPath = tableDirectoryPath;
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSMutableArray *folders = [NSMutableArray array];
         for (NSString *filename in [fileManager enumeratorAtPath:tableDirectoryPath]) {
             //NSLog(@"Found file %@", filename);
             int len = 0,r;
-            if ((r=sscanf([filename UTF8String], [pattern UTF8String], &len)) != 1) {
+            if ((r=sscanf([filename UTF8String], [tableFilePattern UTF8String], &len)) != 1) {
                 NSLog(@"sscanf fail %d", r);
                 continue;
             }
@@ -261,12 +268,31 @@ return validateFixedString(strValue, outError, encoding, length); \
     [self setChildren:nil];
     [self setName:nil];
     [self setFolderPattern:nil];
+    [self setTableDirectoryPath:nil];
     [super dealloc];
 }
 
 - (BOOL)addFolder:(NSString *)name {
-    NSLog(@"KTFolderCategory addFolder:%@ (not implemented)", name);
-    return NO;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *tableFilePath, *folderPath;
+    {
+        int i = 1;
+        do {
+            tableFilePath = [self.tableDirectoryPath stringByAppendingPathComponent:[NSString stringWithFormat:self.tableFilePattern, i]];
+            folderPath = [NSString stringWithFormat:self.folderPattern, i];
+            ++i;
+        } while ([fileManager fileExistsAtPath:tableFilePath]); // should check for the folder's existence?
+    }
+    KTFolderInfo *info = [[KTFolderInfo alloc] initWithNewFolderAtPath:folderPath
+                                                           displayName:name
+                                                         tableFilePath:tableFilePath
+                                                                parent:self];
+    if (!info) {
+        return NO;
+    }
+    [info updateTable];
+    self.children = [self.children arrayByAddingObject:[info autorelease]];
+    return YES;
 }
 
 - (BOOL)isLeaf {
@@ -310,9 +336,57 @@ return validateFixedString(strValue, outError, encoding, length); \
     return self;
 }
 
+- initWithNewFolderAtPath:(NSString *)folderPath
+              displayName:(NSString *)displayName
+            tableFilePath:(NSString *)tablePath
+                   parent:(KTFolderCategory *)parent {
+    self = [super init];
+    if (self) {
+        self.parent = parent;
+        self.tablePath = tablePath;
+        _tableFileData = [[NSMutableData new] initWithLength:512];
+        {
+            unsigned char *bytes = [_tableFileData mutableBytes];
+            bytes[0] = 0x01;
+            bytes[1] = 0x00;
+            bytes[256] = 0x00;
+            bytes[257] = 0x11;
+        }
+        self.displayName = displayName;
+        self.folderPath = folderPath;
+        self.children = [NSMutableArray array];
+        {
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            NSString *folderAbsPath = [self absolutePath];
+            if (![fileManager fileExistsAtPath:folderAbsPath]) {
+                NSError *error = nil;
+                if (![fileManager createDirectoryAtPath:folderAbsPath withIntermediateDirectories:YES attributes:nil error:&error]) {
+                    // TODO: handle error
+                    NSLog(@"Could not create directory:%@",error);
+                    [self release];
+                    return nil;
+                }
+            }
+            if (![fileManager createFileAtPath:tablePath
+                                      contents:[NSData data]
+                                    attributes:nil]) {
+                NSLog(@"Could not create table file:%@",tablePath);
+                [self release];
+                return nil;
+            }
+        }
+        _tableFileHandle = [[NSFileHandle fileHandleForWritingAtPath:tablePath] retain];
+        if (!_tableFileHandle) {
+            [self release];
+            NSLog(@"Could not open table file:%@",tablePath);
+            return nil;
+        }
+    }
+    return self;
+}
+
 - (void)dealloc {
     [self setChildren:nil];
-    [self setFolderPath:nil];
     [self setTablePath:nil];
     if (_tableFileHandle) {
         [_tableFileHandle closeFile];
@@ -333,7 +407,6 @@ return validateFixedString(strValue, outError, encoding, length); \
     return [self.parent.root.rootPath stringByAppendingPathComponent:[NSString pathWithComponents:components]];
 }
 - (void)loadTableFile {
-    self.folderPath = getStringFromDataWithEncoding(_tableFileData, NSMakeRange(2, 254), NSASCIIStringEncoding);
     uint16_t number_of_files = getUInt16FromData(_tableFileData, NSMakeRange(342,2));
     {
         NSMutableArray *files = [NSMutableArray array];
@@ -455,6 +528,7 @@ return validateFixedString(strValue, outError, encoding, length); \
 
 // Properties
 
+DEFINE_STRING_ACCESSOR(folderPath, FolderPath, 2, 254, NSASCIIStringEncoding)
 DEFINE_STRING_ACCESSOR(deviceName, DeviceName, 384, 32, NSASCIIStringEncoding)
 DEFINE_STRING_ACCESSOR_BASE(displayName, DisplayName, 258, 64, NSShiftJISStringEncoding,
                             [self willChangeValueForKey:@"browserValue"]; EMPTY,
